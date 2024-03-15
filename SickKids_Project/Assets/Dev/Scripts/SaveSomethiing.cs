@@ -6,6 +6,8 @@ using Unity.Services.Core;
 using Unity.Services.Authentication;
 using Unity.Services.CloudSave;
 using UnityEngine.UI; // Import the UI namespace
+using UnityEngine.SceneManagement;
+
 
 public class SaveSomethiing : MonoBehaviour
 {
@@ -111,24 +113,30 @@ public class SaveSomethiing : MonoBehaviour
 
             await CloudSaveService.Instance.Data.Player.SaveAsync(initialPlayerData);
             Debug.Log("Initialized player data for new user: "+ username);
+
+            // Load the MainMenu scene after successful signup
+            SceneManager.LoadScene("MainMenu");
         }
         catch (Exception ex)
         {
             Debug.LogError($"Error during sign up or initializing data: {ex.Message}");
         }
     }
+
     
     public async void SignInWithUsernamePasswordAsync()
     {
-        
         string username = usernameInputField.text;
         string password = passwordInputField.text;
-        
+    
         try
         {
             AuthenticationService.Instance.SignOut();
             await AuthenticationService.Instance.SignInWithUsernamePasswordAsync(username, password);
             Debug.Log("SignIn is successful.");
+
+            // Load the MainMenu scene after successful sign-in
+            SceneManager.LoadScene("MainMenu");
         }
         catch (AuthenticationException ex)
         {
