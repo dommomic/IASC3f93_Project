@@ -14,15 +14,28 @@ public class CollectibleItem : Interactable
     public Canvas canvas2; // Assign in the Unity Editor
     public Text itemNameText; // Assign in the Unity Editor
     public Text itemDescriptionText; // Assign in the Unity Editor
-    public PlayerInput playerInput; // Assign in the Unity Editor
+   
 
     private Renderer itemRenderer;
     private Material itemMaterial;
     private Color originalEmissionColor;
+    private PlayerMotor playerMotor;
+    private PlayerLook playerLook;
 
     void Start()
     {
+        GameObject player = GameObject.FindWithTag("Player");
         itemRenderer = GetComponent<Renderer>();
+        if (player != null)
+        {
+            playerMotor = player.GetComponent<PlayerMotor>();
+            playerLook = player.GetComponent<PlayerLook>(); 
+        }
+
+        if (playerMotor == null)
+        {
+            Debug.LogError("PlayerMotor component not found on the player!");
+        }
         if (itemRenderer != null)
         {
             itemMaterial = itemRenderer.material;
@@ -33,6 +46,7 @@ public class CollectibleItem : Interactable
 
     protected override void Interact()
     {
+        ReturnToPlay();
         Debug.Log("Collected " + itemName);
 
         // Save the item name to cloud
@@ -46,9 +60,10 @@ public class CollectibleItem : Interactable
         }
         
         // Disable player input
-        if (playerInput != null)
+        if (playerMotor != null && playerLook != null)
         {
-            playerInput.Disable();
+            playerMotor.canMove = false;
+            playerLook.DisableLook();
         }
 
         SwitchCanvasAndUpdateText();
@@ -110,20 +125,27 @@ public class CollectibleItem : Interactable
     void Update()
     {
         // Check if the Escape key is pressed
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) )
         {
-            // Enable Canvas1 and disable Canvas2
-            if (canvas1 != null && canvas2 != null)
-            {
-                canvas1.gameObject.SetActive(true);
-                canvas2.gameObject.SetActive(false);
- 
-                // Re-enable player input
-                if (playerInput != null)
-                {
-                    playerInput.Enable();
-                }
-            }
+            ReturnToPlay();
         }
     }
+    
+
+void ReturnToPlay()
+{
+    // Enable Canvas1 and disable Canvas2
+    if (canvas1 != null && canvas2 != null)
+    {
+        canvas1.gameObject.SetActive(true);
+        canvas2.gameObject.SetActive(false);
+
+        // Re-enable player input
+        if (playerMotor != null && playerLook != null)
+        {
+            playerMotor.canMove = true;
+            playerLook.EnableLook();
+        }
+    }
+}
 }
