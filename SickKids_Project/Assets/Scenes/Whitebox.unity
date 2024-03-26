@@ -131,6 +131,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 856405737}
     m_Modifications:
+    - target: {fileID: 2979976850770106066, guid: f0400aa290c2be84b9759285d1087654, type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: 3ea144d0ea5108e48ae52faebed6b4bb, type: 2}
     - target: {fileID: 3628772479371425543, guid: f0400aa290c2be84b9759285d1087654, type: 3}
       propertyPath: m_Name
       value: Front_Doors
