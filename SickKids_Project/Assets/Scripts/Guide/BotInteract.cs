@@ -5,6 +5,7 @@ using UnityEngine;
 public class BotInteract : Interactable
 {
     private WaypointMover waypointMover;
+    private bool isInteracted = false;
 
     void Start()
     {
@@ -14,10 +15,17 @@ public class BotInteract : Interactable
 
     protected override void Interact()
     {
-        // Trigger the waypoint mover to advance to the next waypoint
         if (waypointMover != null)
         {
-            waypointMover.AdvanceToNextWaypoint();
+            if (!isInteracted)
+            {
+                waypointMover.displayInfo();
+            }
+            else
+            {
+                waypointMover.AdvanceToNextWaypoint();
+            }
+            isInteracted = !isInteracted; // Toggle the interacted state
         }
     }
 }

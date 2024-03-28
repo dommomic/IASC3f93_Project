@@ -14,16 +14,31 @@ public class WaypointMover : MonoBehaviour
     public Canvas canvas2; // The canvas of the chat
     private Transform currentWaypoint;
     public Text chatText;
-    private String[] chatStrings = new []{"First Stop", "Second Stop", "Third Stop" , "Fourth Stop"};
+    private String[] chatStrings = new []{"First Stop", "Second Stop", "Third Stop" , "Fourth Stop", "Fifth Stop"};
+    private int currentIndex = 0;
+    private PlayerMotor playerMotor;
+    private PlayerLook playerLook;
+    private GameObject player;
+   public WhiteBoxManager wb;
      
     
     // Start is called before the first frame update
     void Start()
     {
+         player= GameObject.FindWithTag("Player");
+         
+        // get player info
+        
+        if (player != null)
+        {
+            playerMotor = player.GetComponent<PlayerMotor>();
+            playerLook = player.GetComponent<PlayerLook>(); 
+        }
         //Set Initial pos
         
         currentWaypoint = waypoints.GetNextWaypoint(currentWaypoint);
         transform.position = currentWaypoint.position;
+        
         
         //set next waypoint target
         transform.LookAt(currentWaypoint);
@@ -35,7 +50,10 @@ public class WaypointMover : MonoBehaviour
     {
        
         moveToNextWaypoint();
-       
+        if (Vector3.Distance(transform.position, currentWaypoint.position) < distanceThreshold)
+        {
+            transform.LookAt(player.transform);
+        }
         
     }
 
@@ -47,20 +65,30 @@ public class WaypointMover : MonoBehaviour
     
     public void AdvanceToNextWaypoint()
     {
+        ReturnToPlay();
         currentWaypoint = waypoints.GetNextWaypoint(currentWaypoint);
         transform.LookAt(currentWaypoint);
+        currentIndex++;//last thing it should do
+        if (currentIndex >= waypoints.getWaypointChildren())
+        {
+            currentIndex = 0;
+        }
+        wb.UpdateGuideIndex(currentIndex);
         
     }
 
-    private void displayInfo()
+    public void displayInfo()
     {
-        Debug.Log(currentWaypoint.GetSiblingIndex()- 1);
+       
+        disableMovement();
+        SwitchCanvasAndUpdateText();
     }
     
     private void SwitchCanvasAndUpdateText()
     {
         if (canvas1 != null)
         {
+            chatText.text = chatStrings[currentIndex];
             canvas1.gameObject.SetActive(false);
         }
 
@@ -72,5 +100,33 @@ public class WaypointMover : MonoBehaviour
         }
     }
     
+    void ReturnToPlay()
+    {
+        // Enable Canvas1 and disable Canvas2
+        if (canvas1 != null && canvas2 != null)
+        {
+            canvas1.gameObject.SetActive(true);
+            canvas2.gameObject.SetActive(false);
+
+            // Re-enable player input
+            if (playerMotor != null && playerLook != null)
+            {
+                playerMotor.canMove = true;
+                playerLook.EnableLook();
+            }
+        }
+    }
+
+    private void disableMovement()
+    {
+        if (playerMotor != null && playerLook != null)
+        {
+            playerMotor.canMove = false;
+            playerLook.DisableLook();
+        }
+    }
     
+  
+
+
 }

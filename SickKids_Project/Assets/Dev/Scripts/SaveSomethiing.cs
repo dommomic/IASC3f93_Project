@@ -45,7 +45,8 @@ public class SaveSomethiing : MonoBehaviour
             {
                 { "username", username },
                 { "itemsFound", new List<string>() }, // Empty list for items found
-                { "questsCompleted", new List<string>() } // Empty list for quests completed
+                { "questsCompleted", new List<string>() }, // Empty list for quests completed
+                { "GuideIndex", 0 }
             };
 
             await CloudSaveService.Instance.Data.Player.SaveAsync(initialPlayerData);

@@ -35,8 +35,10 @@ public class WhiteBoxManager : MonoBehaviour
             }
 
             // Proceed to load and disable found items after successful login
+            
             LoadAndDisplayPlayerName();
             LoadAndDisableFoundItems();
+           
         }
         catch (System.Exception ex)
         {
@@ -104,4 +106,20 @@ public class WhiteBoxManager : MonoBehaviour
                 Debug.LogError("Failed to load player name: " + ex.Message);
             }
         }
+        
+        public async void UpdateGuideIndex(int newIndex)
+        {
+            try
+            {
+                // Update the GuideIndex value in Cloud Save
+                await CloudSaveService.Instance.Data.Player.SaveAsync(new Dictionary<string, object> { { "GuideIndex", newIndex } });
+                Debug.Log($"GuideIndex updated to {newIndex} in Cloud Save.");
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError($"Failed to update GuideIndex: {ex.Message}");
+            }
+        }
+        
+  
 }
