@@ -10,10 +10,12 @@ public class WhiteBoxManager : MonoBehaviour
     private string testUsername = "test_user";
     private string testPassword = "Welland2024.";
     public Text playerNameText; // Assign this in the Unity Inspector
+    [SerializeField] public bool canAdvance;
 
     void Start()
     {
         InitializeServices();
+        canAdvance = false;
     }
 
     async void InitializeServices()
@@ -119,6 +121,12 @@ public class WhiteBoxManager : MonoBehaviour
             {
                 Debug.LogError($"Failed to update GuideIndex: {ex.Message}");
             }
+        }
+        
+        //says if player can advance to next AI Scene
+        public void negAdvance()
+        {
+            canAdvance = !canAdvance;
         }
         
   

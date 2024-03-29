@@ -19,7 +19,8 @@ public class WaypointMover : MonoBehaviour
     private PlayerMotor playerMotor;
     private PlayerLook playerLook;
     private GameObject player;
-   public WhiteBoxManager wb;
+    public WhiteBoxManager wb;
+   
      
     
     // Start is called before the first frame update
@@ -100,7 +101,7 @@ public class WaypointMover : MonoBehaviour
         }
     }
     
-    void ReturnToPlay()
+    public void ReturnToPlay()
     {
         // Enable Canvas1 and disable Canvas2
         if (canvas1 != null && canvas2 != null)

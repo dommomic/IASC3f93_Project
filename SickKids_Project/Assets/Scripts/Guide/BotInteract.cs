@@ -6,6 +6,7 @@ public class BotInteract : Interactable
 {
     private WaypointMover waypointMover;
     private bool isInteracted = false;
+    public WhiteBoxManager wb;
 
     void Start()
     {
@@ -17,13 +18,22 @@ public class BotInteract : Interactable
     {
         if (waypointMover != null)
         {
-            if (!isInteracted)
+            if (!isInteracted && !wb.canAdvance)
             {
                 waypointMover.displayInfo();
             }
-            else
+            else if (isInteracted && !wb.canAdvance)
+            {
+                waypointMover.ReturnToPlay();
+            }
+            else if (isInteracted && wb.canAdvance)
+            {
+                waypointMover.ReturnToPlay();
+            }
+            else if (!isInteracted && wb.canAdvance)
             {
                 waypointMover.AdvanceToNextWaypoint();
+                wb.negAdvance();
             }
             isInteracted = !isInteracted; // Toggle the interacted state
         }
