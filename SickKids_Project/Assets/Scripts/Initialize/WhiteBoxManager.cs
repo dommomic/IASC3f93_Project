@@ -20,6 +20,7 @@ public class WhiteBoxManager : MonoBehaviour
 
     async void InitializeServices()
     {
+      
         await UnityServices.InitializeAsync();
         // Start the login process
         Login();

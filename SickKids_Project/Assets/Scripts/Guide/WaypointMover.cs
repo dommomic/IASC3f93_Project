@@ -36,9 +36,10 @@ public class WaypointMover : MonoBehaviour
             playerLook = player.GetComponent<PlayerLook>(); 
         }
         //Set Initial pos
-        
+      
         currentWaypoint = waypoints.GetNextWaypoint(currentWaypoint);
         transform.position = currentWaypoint.position;
+        currentIndex = waypoints.childIndex;
         
         
         //set next waypoint target
