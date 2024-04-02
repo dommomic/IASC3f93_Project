@@ -21,6 +21,9 @@ public class CollectibleItem : Interactable
     private Color originalEmissionColor;
     private PlayerMotor playerMotor;
     private PlayerLook playerLook;
+    [SerializeField] public int ItemIndex;
+    public WhiteBoxManager wb;
+    
 
     void Start()
     {
@@ -46,8 +49,13 @@ public class CollectibleItem : Interactable
 
     protected override void Interact()
     {
+        if (ItemIndex == wb.GuideLocation)
+        {
+            wb.canAdvance = true;
+        }
         ReturnToPlay();
         Debug.Log("Collected " + itemName);
+        
 
         // Save the item name to cloud
         UpdateCollectedItemsInCloud(itemName);

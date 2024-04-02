@@ -4,6 +4,7 @@ using Unity.Services.Core;
 using Unity.Services.Authentication;
 using Unity.Services.CloudSave;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 public class WhiteBoxManager : MonoBehaviour
 {
@@ -11,8 +12,12 @@ public class WhiteBoxManager : MonoBehaviour
     private string testPassword = "Welland2024.";
     public Text playerNameText; // Assign this in the Unity Inspector
     [SerializeField] public bool canAdvance;
+    public int GuideLocation;
+    
 
-    void Start()
+   
+
+    public void Start()
     {
         InitializeServices();
         canAdvance = false;
@@ -41,6 +46,8 @@ public class WhiteBoxManager : MonoBehaviour
             
             LoadAndDisplayPlayerName();
             LoadAndDisableFoundItems();
+            
+            
            
         }
         catch (System.Exception ex)
@@ -117,6 +124,7 @@ public class WhiteBoxManager : MonoBehaviour
                 // Update the GuideIndex value in Cloud Save
                 await CloudSaveService.Instance.Data.Player.SaveAsync(new Dictionary<string, object> { { "GuideIndex", newIndex } });
                 Debug.Log($"GuideIndex updated to {newIndex} in Cloud Save.");
+                
             }
             catch (System.Exception ex)
             {
@@ -130,5 +138,7 @@ public class WhiteBoxManager : MonoBehaviour
             canAdvance = !canAdvance;
         }
         
+        
+
   
 }

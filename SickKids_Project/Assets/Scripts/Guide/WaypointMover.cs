@@ -24,8 +24,10 @@ public class WaypointMover : MonoBehaviour
      
     
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
+        
+       
          player= GameObject.FindWithTag("Player");
          
         // get player info
@@ -36,7 +38,10 @@ public class WaypointMover : MonoBehaviour
             playerLook = player.GetComponent<PlayerLook>(); 
         }
         //Set Initial pos
-      
+       
+       
+        
+        
         currentWaypoint = waypoints.GetNextWaypoint(currentWaypoint);
         transform.position = currentWaypoint.position;
         currentIndex = waypoints.childIndex;
@@ -46,6 +51,7 @@ public class WaypointMover : MonoBehaviour
         transform.LookAt(currentWaypoint);
        
     }
+
 
     // Update is called once per frame
     void Update()
@@ -70,7 +76,8 @@ public class WaypointMover : MonoBehaviour
         ReturnToPlay();
         currentWaypoint = waypoints.GetNextWaypoint(currentWaypoint);
         transform.LookAt(currentWaypoint);
-        currentIndex++;//last thing it should do
+        currentIndex++;
+        wb.GuideLocation++;//last thing it should do
         if (currentIndex >= waypoints.getWaypointChildren())
         {
             currentIndex = 0;
