@@ -94,6 +94,7 @@ public class WaypointMover : MonoBehaviour
         if (currentIndex >= waypoints.getWaypointChildren())
         {
             currentIndex = 0;
+            wb.GuideLocation = 0;
         }
         wb.UpdateGuideIndex(currentIndex);
         
