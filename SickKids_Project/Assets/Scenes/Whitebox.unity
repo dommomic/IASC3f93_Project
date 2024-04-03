@@ -19082,6 +19082,8 @@ MonoBehaviour:
   canvas2: {fileID: 2091608712}
   chatText: {fileID: 843378326}
   wb: {fileID: 810055652}
+  startIndex: 0
+  hasSpawned: 0
 --- !u!1001 &889717613
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -47163,7 +47165,7 @@ MonoBehaviour:
   canvas2: {fileID: 969564816}
   itemNameText: {fileID: 2116603269}
   itemDescriptionText: {fileID: 2019755834}
-  ItemIndex: 0
+  ItemIndex: 1
   wb: {fileID: 810055652}
 --- !u!65 &2123056945
 BoxCollider:

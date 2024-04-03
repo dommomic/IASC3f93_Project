@@ -46,9 +46,10 @@ public class WhiteBoxManager : MonoBehaviour
             
             LoadAndDisplayPlayerName();
             LoadAndDisableFoundItems();
-            
-            
-           
+            LoadGuideIndexAndSetStartIndex();
+
+
+
         }
         catch (System.Exception ex)
         {
@@ -137,6 +138,53 @@ public class WhiteBoxManager : MonoBehaviour
         {
             canAdvance = !canAdvance;
         }
+        
+        public async void LoadGuideIndexAndSetStartIndex()
+        {
+            try
+            {
+                // Load the GuideIndex value from Cloud Save
+                var playerData = await CloudSaveService.Instance.Data.Player.LoadAsync(new HashSet<string> { "GuideIndex" });
+
+                if (playerData.TryGetValue("GuideIndex", out var guideIndexValue))
+                {
+                    int guideIndex = guideIndexValue.Value.GetAs<int>();
+                    Debug.Log($"Fetched GuideIndex: {guideIndex}");
+
+                    // Find the guide GameObject in the scene
+                    GameObject guideObject = GameObject.Find("Guide");
+                    if (guideObject != null)
+                    {
+                        // Get the WaypointMover component
+                        WaypointMover waypointMover = guideObject.GetComponent<WaypointMover>();
+                        if (waypointMover != null)
+                        {
+                            // Set the startIndex variable
+                            waypointMover.startIndex = guideIndex;
+                            waypointMover.hasSpawned = true;
+                            Debug.Log("Guide's startIndex set to: " + guideIndex);
+                        }
+                        else
+                        {
+                            Debug.LogError("WaypointMover component not found on 'guide' GameObject.");
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError("'guide' GameObject not found in the scene.");
+                    }
+                }
+                else
+                {
+                    Debug.LogError("GuideIndex not found in Cloud Save data.");
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError($"Failed to load and set GuideIndex: {ex.Message}");
+            }
+        }
+
         
         
 

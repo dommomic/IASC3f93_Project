@@ -20,7 +20,8 @@ public class WaypointMover : MonoBehaviour
     private PlayerLook playerLook;
     private GameObject player;
     public WhiteBoxManager wb;
-   
+    [SerializeField]public int startIndex = -1;
+    public bool hasSpawned = false;
      
     
     // Start is called before the first frame update
@@ -38,13 +39,13 @@ public class WaypointMover : MonoBehaviour
             playerLook = player.GetComponent<PlayerLook>(); 
         }
         //Set Initial pos
-       
-       
+
+            
+            currentWaypoint = waypoints.getPointOnIndex(startIndex);
+            transform.position = currentWaypoint.position;
+            currentIndex = waypoints.childIndex;  
         
-        
-        currentWaypoint = waypoints.GetNextWaypoint(currentWaypoint);
-        transform.position = currentWaypoint.position;
-        currentIndex = waypoints.childIndex;
+       
         
         
         //set next waypoint target
@@ -56,6 +57,18 @@ public class WaypointMover : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        if (hasSpawned)
+        {
+            
+            hasSpawned = !hasSpawned;
+            wb.GuideLocation = startIndex;
+            waypoints.childIndex = startIndex;
+            currentWaypoint = waypoints.getPointOnIndex(startIndex);
+            transform.position = currentWaypoint.position;
+            currentIndex = waypoints.childIndex; 
+            
+        }
        
         moveToNextWaypoint();
         if (Vector3.Distance(transform.position, currentWaypoint.position) < distanceThreshold)
