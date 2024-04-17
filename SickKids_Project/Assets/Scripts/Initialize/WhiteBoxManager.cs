@@ -13,6 +13,8 @@ public class WhiteBoxManager : MonoBehaviour
     public Text playerNameText; // Assign this in the Unity Inspector
     [SerializeField] public bool canAdvance;
     public int GuideLocation;
+    public GameObject pauseMenu;
+    private bool isPaused;
     
 
    
@@ -21,6 +23,14 @@ public class WhiteBoxManager : MonoBehaviour
     {
         InitializeServices();
         canAdvance = false;
+    }
+    
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape) )
+        {
+            PauseGame();
+        }
     }
 
     async void InitializeServices()
@@ -137,6 +147,28 @@ public class WhiteBoxManager : MonoBehaviour
         public void negAdvance()
         {
             canAdvance = !canAdvance;
+        }
+        public async void ExitGame()
+        {
+            // Log message to console
+            Debug.Log("Exiting Game");
+        
+            // Quit the application
+            Application.Quit();
+        }
+        
+        public async void PauseGame()
+        {
+            if (!isPaused)
+            {
+                pauseMenu.SetActive(true);
+            }
+            else
+            {
+                pauseMenu.SetActive(false);
+            }
+
+            isPaused = !isPaused;
         }
         
         public async void LoadGuideIndexAndSetStartIndex()
