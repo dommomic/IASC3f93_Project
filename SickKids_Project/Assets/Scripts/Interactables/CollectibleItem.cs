@@ -23,12 +23,14 @@ public class CollectibleItem : Interactable
     private PlayerLook playerLook;
     [SerializeField] public int ItemIndex;
     public WhiteBoxManager wb;
+    private bool hasInteracted;
     
 
     void Start()
     {
         GameObject player = GameObject.FindWithTag("Player");
         itemRenderer = GetComponent<Renderer>();
+        hasInteracted = false;
         if (player != null)
         {
             playerMotor = player.GetComponent<PlayerMotor>();
@@ -49,32 +51,44 @@ public class CollectibleItem : Interactable
 
     protected override void Interact()
     {
-        if (ItemIndex == wb.GuideLocation)
-        {
-            wb.canAdvance = true;
-        }
-        ReturnToPlay();
-        Debug.Log("Collected " + itemName);
         
-
-        // Save the item name to cloud
-        UpdateCollectedItemsInCloud(itemName);
-
-        // Turn off emission to remove the glow
-        if (itemMaterial != null)
+        if (hasInteracted)
         {
-            itemMaterial.SetColor("_EmissionColor", Color.black);
-            DynamicGI.SetEmissive(itemRenderer, Color.black);
+            ReturnToPlay();
         }
+        else
+        {
+            if (ItemIndex == wb.GuideLocation)
+            {
+                wb.canAdvance = true;
+            }
+
+       
+            Debug.Log("Collected " + itemName);
         
-        // Disable player input
-        if (playerMotor != null && playerLook != null)
-        {
-            playerMotor.canMove = false;
-            playerLook.DisableLook();
+        
+            // Save the item name to cloud
+            UpdateCollectedItemsInCloud(itemName);
+
+            // Turn off emission to remove the glow
+            if (itemMaterial != null)
+            {
+                itemMaterial.SetColor("_EmissionColor", Color.black);
+                DynamicGI.SetEmissive(itemRenderer, Color.black);
+            }
+        
+            // Disable player input
+            if (playerMotor != null && playerLook != null)
+            {
+                playerMotor.canMove = false;
+                playerLook.DisableLook();
+            }
+
+            SwitchCanvasAndUpdateText();
         }
 
-        SwitchCanvasAndUpdateText();
+        hasInteracted = !hasInteracted;
+       
     }
 
     private async void UpdateCollectedItemsInCloud(string newItem)
@@ -133,7 +147,7 @@ public class CollectibleItem : Interactable
     void Update()
     {
         // Check if the Escape key is pressed
-        if (Input.GetKeyDown(KeyCode.Escape) )
+        if (Input.GetKeyDown(KeyCode.F) )
         {
             ReturnToPlay();
         }

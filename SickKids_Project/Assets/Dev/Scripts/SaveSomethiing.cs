@@ -53,7 +53,7 @@ public class SaveSomethiing : MonoBehaviour
             Debug.Log("Initialized player data for new user: "+ username);
 
             // Load the MainMenu scene after successful signup
-            SceneManager.LoadScene("MainMenu");
+            SceneManager.LoadScene("Whitebox");
         }
         catch (Exception ex)
         {
@@ -74,7 +74,7 @@ public class SaveSomethiing : MonoBehaviour
             Debug.Log("SignIn is successful.");
 
             // Load the MainMenu scene after successful sign-in
-            SceneManager.LoadScene("MainMenu");
+            SceneManager.LoadScene("Whitebox");
         }
         catch (AuthenticationException ex)
         {
@@ -124,8 +124,16 @@ public class SaveSomethiing : MonoBehaviour
         }
     }
 
+    public async void ExitGame()
+    {
+        // Log message to console
+        Debug.Log("Exiting Game");
+        
+        // Quit the application
+        Application.Quit();
+    }
 
-
+    
 
 
 
