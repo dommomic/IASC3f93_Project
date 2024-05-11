@@ -6,10 +6,10 @@ public class PlayerLook : MonoBehaviour
 {
     public Camera Cam;
     public float xRotation = 0;
-    public float ySensitivity = 30f;
-    public float xSensitivity = 30f;
+    public float ySensitivity = 5f;
+    public float xSensitivity = 5f;
 
-    private bool canLook = true; // Add this line
+    public bool canLook = true; // Add this line
 
     public void processLook(Vector2 input)
     {

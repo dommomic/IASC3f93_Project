@@ -15,6 +15,8 @@ public class WhiteBoxManager : MonoBehaviour
     public int GuideLocation;
     public GameObject pauseMenu;
     private bool isPaused;
+
+
     
 
    
@@ -29,7 +31,9 @@ public class WhiteBoxManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape) )
         {
+           
             PauseGame();
+            
         }
     }
 
@@ -162,10 +166,12 @@ public class WhiteBoxManager : MonoBehaviour
             if (!isPaused)
             {
                 pauseMenu.SetActive(true);
+                Time.timeScale = 0;
             }
             else
             {
                 pauseMenu.SetActive(false);
+                Time.timeScale = 1;
             }
 
             isPaused = !isPaused;
